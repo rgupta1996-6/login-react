@@ -1,24 +1,19 @@
-import React,{useState,useEffect} from 'react';
-import axios from 'axios';
+import React,{useEffect} from 'react';
 import Table from './table';
 import Sidebar from '../components/sidebar';
 import './home.css';
+import { connect } from 'react-redux';
+import {fetchAccounts} from '../actions';
 
 
 const Home = (props) => {
 
-    const [data,setData]= useState([]);
+    
 
     useEffect(() => {
-        (async () => {
-          const response = await axios.get("http://localhost:8000/api/showall");
-    
-          const content = await response.data;
-    
-          setData(content);
-        })();
+       props.fetchAccounts();
       },[]);
-      console.log(data);
+      console.log(props.accounts);
 
     return (
       <div className="row">
@@ -27,10 +22,19 @@ const Home = (props) => {
           {props.name
             ? "Hi " + props.name + ","
             : "You have been logged out,Please login again to continue."}
-          <div>{props.name ? <Table data={data} /> : ""}</div>
+          <div>{props.name ? <Table data={props.accounts} /> : ""}</div>
         </div>
       </div>
     );
 };
 
-export default Home;
+const mapStateToProps = (state) => {
+    return {accounts:state.accounts}
+}
+
+
+
+export default connect(
+    mapStateToProps,
+    {fetchAccounts}
+)(Home);

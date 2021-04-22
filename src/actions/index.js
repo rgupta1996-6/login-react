@@ -1,27 +1,10 @@
-export const newAccount = data =>{
-    return{
-        type: 'NEW_ACCOUNT',
-        payload: data
-    };
-};
+import axios from 'axios';
 
-export const creditBalance = amount => {
-    return{
-        type: 'CREDIT_BALANCE',
-        payload: amount
-    };
-};
 
-export const debitBalance = amount => {
-    return{
-        type: 'DEBIT_BALANCE',
-        payload: amount
-    };
-};
+export const fetchAccounts = () => async dispatch => {
 
-export const deleteAccount = accID => {
-    return{
-        type: 'DELETE_ACCOUNT',
-        payload: accID
-    };
-};
+    const response= await axios.get('http://localhost:8000/api/showall');
+
+    dispatch({type:'FETCH_ACCOUNTS',payload: response.data})
+
+}

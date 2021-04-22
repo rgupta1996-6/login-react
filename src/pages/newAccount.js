@@ -48,7 +48,7 @@ const NewAccount = () => {
           className="form-control"
           onChange={(e) => setAccType(e.target.value)}
         >
-          <option value="" disabled selected hidden>
+          <option disabled selected hidden>
             Choose Account Type
           </option>
           <option value="current">Current</option>

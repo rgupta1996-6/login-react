@@ -1,6 +1,7 @@
 import React,{useEffect} from 'react';
 import Table from './table';
 import Sidebar from '../components/sidebar';
+import Nav from "../components/nav";
 import './home.css';
 import { connect } from 'react-redux';
 import {fetchAccounts} from '../actions';
@@ -16,6 +17,8 @@ const Home = (props) => {
       console.log(props.accounts);
 
     return (
+        <>
+        <Nav name = {props.name} setName={props.setName}/>
       <div className="row">
         <div className="side">{props.name ? <Sidebar /> : ""}</div>
         <div className="main">
@@ -25,6 +28,7 @@ const Home = (props) => {
           <div>{props.name ? <Table data={props.accounts} /> : ""}</div>
         </div>
       </div>
+      </>
     );
 };
 

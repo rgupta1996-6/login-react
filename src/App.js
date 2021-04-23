@@ -3,7 +3,7 @@ import Login from "./pages/login";
 import Nav from "./components/nav";
 import "./App.css";
 import { BrowserRouter, Route } from "react-router-dom";
-import Home from "./pages/home";
+import Dashboard from "./pages/dashboard";
 import Register from "./pages/register";
 import NewAccount from "./pages/newAccount";
 import CreditBalance from "./pages/creditBalance";
@@ -29,13 +29,11 @@ const App = () => {
   return (
     <div className="App">
       <BrowserRouter>
-        <Nav name={name} setName={setName}/>
-        <Route path="/" exact component={() => <Home name={name} />} />
-        
+        <Route path="/" exact component={() => <Dashboard name={name} setName ={setName} />} />
+        <Route path="/login" exact component={()=><Login setName ={setName}/>} />
+        <Route path="/register" exact component={Register} />
 
         <main className="form-signin">
-          <Route path="/login" exact component={()=><Login setName ={setName}/>} />
-          <Route path="/register" exact component={Register} />
           <Route path="/newAccount" exact component={NewAccount} />
           <Route path="/creditBalance" exact component={CreditBalance} />
           <Route path="/debitBalance" exact component={DebitBalance} />

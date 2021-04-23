@@ -8,12 +8,6 @@ const CreditBalance = (props) => {
     const [amount,setAmount]= useState('');
     const [redirect,setRedirect]= useState(false);
 
-    //console.log(props.location.aboutProps.name)
-
-    // useEffect(() => {
-    //     setAccID(props.location.aboutProps.name)
-
-    // },[] );
 
     const onFormSubmit = async (e) => {
 

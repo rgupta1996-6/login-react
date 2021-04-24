@@ -141,7 +141,6 @@ const Dashboard=(props)=> {
         credentials: 'include',
     });
 
-    props.setName('');
 }
 
   useEffect(() => {

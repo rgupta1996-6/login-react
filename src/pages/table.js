@@ -50,13 +50,13 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-  { id: 'accid', numeric: true, disablePadding: true, label: 'Account ID' },
+  { id: 'accid', numeric: false, disablePadding: true, label: 'Account ID' },
   { id: 'accType', numeric: false, disablePadding: false, label: 'Account Type' },
-  { id: 'bCode', numeric: true, disablePadding: false, label: 'Branch Code' },
-  { id: 'contact', numeric: true, disablePadding: false, label: 'Contact' },
-  { id: 'balance', numeric: true, disablePadding: false, label: 'Balance' },
+  { id: 'bCode', numeric: false, disablePadding: false, label: 'Branch Code' },
+  { id: 'contact', numeric: false, disablePadding: false, label: 'Contact' },
+  { id: 'balance', numeric: false, disablePadding: false, label: 'Balance' },
   { id: 'credit', numeric: false, disablePadding: false, label: 'Credit' },
-  { id: 'debit', numeric: true, disablePadding: false, label: 'Debit' },
+  { id: 'debit', numeric: false, disablePadding: false, label: 'Debit' },
 ];
 
 function EnhancedTableHead(props) {
@@ -68,14 +68,6 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{ 'aria-label': 'select all desserts' }}
-          />
-        </TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -297,24 +289,19 @@ export default function EnhancedTable({data}) {
                       key={row.accid}
                       selected={isItemSelected}
                     >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={isItemSelected}
-                          inputProps={{ 'aria-labelledby': labelId }}
-                        />
-                      </TableCell>
+                      
                       <TableCell component="th" id={labelId} scope="row" padding="none">
                         {row.accid}
                       </TableCell>
-                      <TableCell align="right">{row.acctype}</TableCell>
-                      <TableCell align="right">{row.bcode}</TableCell>
+                      <TableCell align="left">{row.acctype}</TableCell>
+                      <TableCell align="left">{row.bcode}</TableCell>
                       <TableCell align="right">{row.contact}</TableCell>
                       <TableCell align="right">{row.balance}</TableCell>
                       <TableCell align="right"> 
-                      <Link to={{pathname: "/creditbalance", aboutProps:{name:row.accid}}} className="btn btn-primary" >Credit Balance</Link>
+                      <Link to={{pathname: "/creditBalance", aboutProps:{name:row.accid}}} className="btn btn-primary" >Credit Balance</Link>
                       </TableCell>
                       <TableCell align="right">
-                      <Link to={{pathname: "/debitbalance", aboutProps:{name:row.accid}}} className="btn btn-primary" >Debit Balance</Link>
+                      <Link to={{pathname: "/debitBalance", aboutProps:{name:row.accid}}} className="btn btn-primary" >Debit Balance</Link>
                       </TableCell>
                     </TableRow>
                   );

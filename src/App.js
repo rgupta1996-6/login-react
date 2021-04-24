@@ -30,14 +30,14 @@ const App = () => {
     <div className="App">
       <BrowserRouter>
         <Route path="/" exact component={name?() => <Dashboard />:()=><div>You Have been logged out,Please Login to continue</div>} />
-        <Route path="/login" exact component={()=><Login setName ={setName}/>} />
+        <Route path="/login" exact component={()=><Login />} />
         <Route path="/register" exact component={Register} />
     
         <main className="form-signin">
           <Route path="/newAccount" exact component={name?() => <NewAccount />:()=><div>You Have been logged out,Please Login to continue</div>} />
-          <Route path="/creditBalance" exact component={name?() => <CreditBalance />:()=><div>You Have been logged out,Please Login to continue</div>} />
-          <Route path="/debitBalance" exact component={name?() => <DebitBalance />:()=><div>You Have been logged out,Please Login to continue</div>} />
-          <Route path="/deleteAccount" exact component={name?() => <DeleteAccount />:()=><div>You Have been logged out,Please Login to continue</div>} />
+          <Route path="/creditBalance" exact component={name? CreditBalance:Login} />
+          <Route path="/debitBalance" exact component={name?DebitBalance:Login} />
+          <Route path="/deleteAccount" exact component={name?DeleteAccount:Login} />
         </main>
       </BrowserRouter>
     </div>

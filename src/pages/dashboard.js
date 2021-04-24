@@ -12,8 +12,8 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import AddIcon from '@material-ui/icons/Add';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
@@ -25,7 +25,7 @@ import Paper from "@material-ui/core/Paper";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import Orders from "./orders";
+import EnhancedTable from "./table";
 import { connect } from 'react-redux';
 import {fetchAccounts} from '../actions';
 
@@ -150,7 +150,7 @@ const Dashboard=(props)=> {
    console.log(props.accounts);
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root} >
       <CssBaseline />
       <AppBar
         position="absolute"
@@ -201,13 +201,13 @@ const Dashboard=(props)=> {
         <List>
           <ListItem button component={Link} to="/newAccount">
             <ListItemIcon>
-              <DashboardIcon />
+              <AddIcon />
             </ListItemIcon>
             <ListItemText primary="Add New Account"/>
           </ListItem>
           <ListItem button component={Link} to="/deleteAccount">
             <ListItemIcon>
-              <ShoppingCartIcon />
+              <DeleteIcon />
             </ListItemIcon>
             <ListItemText primary="Delete Account" href="/deleteAccount" />
           </ListItem>
@@ -220,7 +220,7 @@ const Dashboard=(props)=> {
             {/* Recent Orders */}
             <Grid item xs={12}>
               <Paper className={classes.paper}>
-                <Orders data={props.accounts} />
+                <EnhancedTable data={props.accounts} />
               </Paper>
             </Grid>
           </Grid>

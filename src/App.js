@@ -1,6 +1,5 @@
 import React, { useState,useEffect } from "react";
 import Login from "./pages/login";
-import Nav from "./components/nav";
 import "./App.css";
 import { BrowserRouter, Route } from "react-router-dom";
 import Dashboard from "./pages/dashboard";
@@ -26,18 +25,19 @@ const App = () => {
     })();
   },[name]);
 
+
   return (
     <div className="App">
       <BrowserRouter>
-        <Route path="/" exact component={() => <Dashboard name={name} setName ={setName} />} />
+        <Route path="/" exact component={name?() => <Dashboard />:()=><div>You Have been logged out,Please Login to continue</div>} />
         <Route path="/login" exact component={()=><Login setName ={setName}/>} />
         <Route path="/register" exact component={Register} />
-
+    
         <main className="form-signin">
-          <Route path="/newAccount" exact component={NewAccount} />
-          <Route path="/creditBalance" exact component={CreditBalance} />
-          <Route path="/debitBalance" exact component={DebitBalance} />
-          <Route path="/deleteAccount" exact component={DeleteAccount} />
+          <Route path="/newAccount" exact component={name?() => <NewAccount />:()=><div>You Have been logged out,Please Login to continue</div>} />
+          <Route path="/creditBalance" exact component={name?() => <CreditBalance />:()=><div>You Have been logged out,Please Login to continue</div>} />
+          <Route path="/debitBalance" exact component={name?() => <DebitBalance />:()=><div>You Have been logged out,Please Login to continue</div>} />
+          <Route path="/deleteAccount" exact component={name?() => <DeleteAccount />:()=><div>You Have been logged out,Please Login to continue</div>} />
         </main>
       </BrowserRouter>
     </div>

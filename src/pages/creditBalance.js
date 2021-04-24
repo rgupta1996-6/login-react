@@ -1,6 +1,7 @@
 import React,{useState} from 'react';
 import {Redirect} from 'react-router-dom';
 import axios from 'axios';
+import Nav from '../components/nav';
 
 
 const CreditBalance = (props) => {
@@ -29,7 +30,9 @@ const CreditBalance = (props) => {
 
 
     return (
-      <form onSubmit={onFormSubmit}>
+        <>
+        <Nav/>
+      <form onSubmit={onFormSubmit} style={{ marginTop: `${60}px` }}>
         <h1 className="h3 mb-3 fw-normal">Please Enter Details</h1>
 
         <input
@@ -52,6 +55,7 @@ const CreditBalance = (props) => {
           Submit
         </button>
       </form>
+      </>
     );
 
 

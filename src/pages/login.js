@@ -65,8 +65,10 @@ export default function Login(props) {
 
       const content= await response.data;
       setRedirect(true);
-  
-  }
+      props.setName(content.name);
+       
+
+    }
     if(redirect){
         return <Redirect to="/" />;
     }

@@ -29,8 +29,8 @@ const App = () => {
   return (
     <div className="App">
       <BrowserRouter>
-        <Route path="/" exact component={name?() => <Dashboard />:()=><div>You Have been logged out,Please Login to continue</div>} />
-        <Route path="/login" exact component={()=><Login />} />
+        <Route path="/" exact component={name? Dashboard  :()=><div>You Have been logged out,Please Login to continue</div>} />
+        <Route path="/login" exact component= {()=><Login setName={setName}/>}/>
         <Route path="/register" exact component={Register} />
     
         <main className="form-signin">

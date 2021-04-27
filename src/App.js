@@ -5,8 +5,6 @@ import { BrowserRouter, Route } from "react-router-dom";
 import Dashboard from "./pages/dashboard";
 import Register from "./pages/register";
 import NewAccount from "./pages/newAccount";
-import CreditBalance from "./pages/creditBalance";
-import DebitBalance from "./pages/debitBalance";
 import DeleteAccount from "./pages/deleteAccount";
 import axios from "axios";
 
@@ -35,11 +33,10 @@ const App = () => {
     
         <main className="form-signin">
           <Route path="/newAccount" exact component={name?() => <NewAccount />:()=><div>You Have been logged out,Please Login to continue</div>} />
-          <Route path="/creditBalance" exact component={name? CreditBalance:Login} />
-          <Route path="/debitBalance" exact component={name?DebitBalance:Login} />
           <Route path="/deleteAccount" exact component={name?DeleteAccount:Login} />
         </main>
       </BrowserRouter>
+
     </div>
   );
 };

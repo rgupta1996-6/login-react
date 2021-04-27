@@ -26,9 +26,8 @@ const DeleteAccount = () => {
 
 
     return (
-        <>
-        <Nav/> 
-      <form onSubmit={onFormSubmit} style={{ marginTop: `${60}px` }} >
+     
+      <form onSubmit={onFormSubmit} >
         <h1 className="h3 mb-3 fw-normal">Please Enter Details</h1>
 
         <input
@@ -42,7 +41,7 @@ const DeleteAccount = () => {
           Submit
         </button>
       </form>
-      </>
+      
     );
 
 

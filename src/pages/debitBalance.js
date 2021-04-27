@@ -1,11 +1,11 @@
 import React,{useState} from 'react';
 import {Redirect} from 'react-router-dom';
 import axios from 'axios';
-import Nav from '../components/nav';
+
 
 
 const DebitBalance = (props) => {
-    const accid = props.location.aboutProps.name; 
+    const accid = props.accid; 
     const [amount,setAmount]= useState('');
     const [redirect,setRedirect]= useState(false);
 
@@ -19,6 +19,7 @@ const DebitBalance = (props) => {
 
         await axios.post('http://localhost:8000/api/debitbalance',data);
         setRedirect(true);
+        props.setOpen(false);
 
     }
 
@@ -28,10 +29,9 @@ const DebitBalance = (props) => {
 
 
     return (
-        <>
-        <Nav/> 
-      <form onSubmit={onFormSubmit} style={{ marginTop: `${60}px` }}>
-        <h1 className="h3 mb-3 fw-normal">Please Enter Details</h1>
+        
+      <form onSubmit={onFormSubmit}>
+        <h3 className="h3 mb-3 fw-normal text-muted">Enter Amount</h3>
 
         <input
           type="text"
@@ -49,11 +49,10 @@ const DebitBalance = (props) => {
         />
 
         <br />
-        <button className="w-100 btn btn-lg btn-primary" type="submit">
+        <button className="w-100 btn btn-lg btn-primary btn-small" type="submit">
           Submit
         </button>
       </form>
-      </>
     );
 
 

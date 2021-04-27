@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Link} from "react-router-dom";
 import clsx from 'clsx';
 import { lighten, makeStyles,fade } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -18,6 +17,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
+import Modal from '../components/modal';
+
 
 
 function descendingComparator(a, b, orderBy) {
@@ -47,17 +48,18 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-  { id: 'accid', numeric: false, disablePadding: true, label: 'Account ID' },
+  { id: 'accid', numeric: false, disablePadding: false, label: 'Account ID' },
   { id: 'accType', numeric: false, disablePadding: false, label: 'Account Type' },
   { id: 'bCode', numeric: false, disablePadding: false, label: 'Branch Code' },
   { id: 'contact', numeric: false, disablePadding: false, label: 'Contact' },
   { id: 'balance', numeric: false, disablePadding: false, label: 'Balance' },
   { id: 'credit', numeric: false, disablePadding: false, label: 'Credit' },
   { id: 'debit', numeric: false, disablePadding: false, label: 'Debit' },
+  { id: 'debit', numeric: false, disablePadding: false },
 ];
 
 function EnhancedTableHead(props) {
-  const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
+  const { classes, order, orderBy, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -95,7 +97,6 @@ EnhancedTableHead.propTypes = {
   classes: PropTypes.object.isRequired,
   numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
   order: PropTypes.oneOf(['asc', 'desc']).isRequired,
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
@@ -237,35 +238,6 @@ export default function EnhancedTable({data}) {
     setOrderBy(property);
   };
 
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.name);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  };
-
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
-
-    setSelected(newSelected);
-  };
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -299,7 +271,6 @@ export default function EnhancedTable({data}) {
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
               rowCount={rows.length}
             />
@@ -313,26 +284,32 @@ export default function EnhancedTable({data}) {
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.name)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
                       key={row.accid}
                       selected={isItemSelected}
                     >
-                      
-                      <TableCell component="th" id={labelId} scope="row" padding="none">
+                      <TableCell
+                        component="th"
+                        id={labelId}
+                        scope="row"
+                        padding="10px"
+                      >
                         {row.accid}
                       </TableCell>
                       <TableCell align="left">{row.acctype}</TableCell>
                       <TableCell align="left">{row.bcode}</TableCell>
                       <TableCell align="right">{row.contact}</TableCell>
                       <TableCell align="right">{row.balance}</TableCell>
-                      <TableCell align="right"> 
-                      <Link to={{pathname: "/creditBalance", aboutProps:{name:row.accid}}} className="btn btn-primary" >Credit Balance</Link>
+                      <TableCell align="right">
+                        <Modal  accid={row.accid } name='Credit Balance' />
                       </TableCell>
                       <TableCell align="right">
-                      <Link to={{pathname: "/debitBalance", aboutProps:{name:row.accid}}} className="btn btn-primary" >Debit Balance</Link>
+                      <Modal  accid={row.accid } name='Debit Balance' />
+                      </TableCell>
+                      <TableCell>
+                      <Modal  accid={row.accid } name='Delete' />
                       </TableCell>
                     </TableRow>
                   );

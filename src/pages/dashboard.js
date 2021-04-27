@@ -125,7 +125,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Dashboard=(props)=> {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -145,7 +145,7 @@ const Dashboard=(props)=> {
 
   useEffect(() => {
     props.fetchAccounts();
-   },[]);
+   });
    console.log(props.accounts);
 
   return (

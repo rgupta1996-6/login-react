@@ -5,7 +5,6 @@ import { BrowserRouter, Route } from "react-router-dom";
 import Dashboard from "./pages/dashboard";
 import Register from "./pages/register";
 import NewAccount from "./pages/newAccount";
-import DeleteAccount from "./pages/deleteAccount";
 import axios from "axios";
 
 const App = () => {
@@ -33,7 +32,6 @@ const App = () => {
     
         <main className="form-signin">
           <Route path="/newAccount" exact component={name?() => <NewAccount />:()=><div>You Have been logged out,Please Login to continue</div>} />
-          <Route path="/deleteAccount" exact component={name?DeleteAccount:Login} />
         </main>
       </BrowserRouter>
 

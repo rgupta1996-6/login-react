@@ -1,25 +1,28 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import { lighten, makeStyles,fade } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
-import SearchIcon from '@material-ui/icons/Search';
-import InputBase from '@material-ui/core/InputBase';
-import Modal from '../components/modal';
-
-
+import React, { useEffect } from "react";
+import PropTypes from "prop-types";
+import clsx from "clsx";
+import { Link } from "react-router-dom";
+import { lighten, makeStyles, fade } from "@material-ui/core/styles";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TablePagination from "@material-ui/core/TablePagination";
+import TableRow from "@material-ui/core/TableRow";
+import TableSortLabel from "@material-ui/core/TableSortLabel";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import Paper from "@material-ui/core/Paper";
+import Fab from "@material-ui/core/Fab";
+import AddIcon from "@material-ui/icons/Add";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Switch from "@material-ui/core/Switch";
+import SearchIcon from "@material-ui/icons/Search";
+import InputBase from "@material-ui/core/InputBase";
+import Modal from "../components/modal";
+import { connect } from 'react-redux';
+import {fetchAccounts} from '../actions';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -32,7 +35,7 @@ function descendingComparator(a, b, orderBy) {
 }
 
 function getComparator(order, orderBy) {
-  return order === 'desc'
+  return order === "desc"
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
@@ -48,14 +51,19 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-  { id: 'accid', numeric: false, disablePadding: false, label: 'Account ID' },
-  { id: 'accType', numeric: false, disablePadding: false, label: 'Account Type' },
-  { id: 'bCode', numeric: false, disablePadding: false, label: 'Branch Code' },
-  { id: 'contact', numeric: false, disablePadding: false, label: 'Contact' },
-  { id: 'balance', numeric: false, disablePadding: false, label: 'Balance' },
-  { id: 'credit', numeric: false, disablePadding: false, label: 'Credit' },
-  { id: 'debit', numeric: false, disablePadding: false, label: 'Debit' },
-  { id: 'debit', numeric: false, disablePadding: false },
+  { id: "acc_id", numeric: false, disablePadding: false, label: "Account ID" },
+  {
+    id: "accType",
+    numeric: false,
+    disablePadding: false,
+    label: "Account Type",
+  },
+  { id: "bCode", numeric: false, disablePadding: false, label: "Branch Code" },
+  { id: "contact", numeric: false, disablePadding: false, label: "Contact" },
+  { id: "balance", numeric: false, disablePadding: false, label: "Balance" },
+  { id: "credit", numeric: false, disablePadding: false, label: "Credit" },
+  { id: "debit", numeric: false, disablePadding: false, label: "Debit" },
+  { id: "debit", numeric: false, disablePadding: false },
 ];
 
 function EnhancedTableHead(props) {
@@ -70,19 +78,19 @@ function EnhancedTableHead(props) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'default'}
+            align={headCell.numeric ? "right" : "left"}
+            padding={headCell.disablePadding ? "none" : "default"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
+              direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
             >
               {headCell.label}
               {orderBy === headCell.id ? (
                 <span className={classes.visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                  {order === "desc" ? "sorted descending" : "sorted ascending"}
                 </span>
               ) : null}
             </TableSortLabel>
@@ -95,9 +103,8 @@ function EnhancedTableHead(props) {
 
 EnhancedTableHead.propTypes = {
   classes: PropTypes.object.isRequired,
-  numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
-  order: PropTypes.oneOf(['asc', 'desc']).isRequired,
+  order: PropTypes.oneOf(["asc", "desc"]).isRequired,
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
 };
@@ -108,7 +115,7 @@ const useToolbarStyles = makeStyles((theme) => ({
     paddingRight: theme.spacing(1),
   },
   highlight:
-    theme.palette.type === 'light'
+    theme.palette.type === "light"
       ? {
           color: theme.palette.secondary.main,
           backgroundColor: lighten(theme.palette.secondary.light, 0.85),
@@ -118,43 +125,43 @@ const useToolbarStyles = makeStyles((theme) => ({
           backgroundColor: theme.palette.secondary.dark,
         },
   title: {
-    flex: '1 1 100%',
+    flex: "1 1 100%",
   },
   search: {
-    position: 'relative',
+    position: "relative",
     borderRadius: theme.shape.borderRadius,
     backgroundColor: fade(theme.palette.common.white, 0.15),
-    '&:hover': {
+    "&:hover": {
       backgroundColor: fade(theme.palette.common.white, 0.25),
     },
     marginRight: theme.spacing(2),
     marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
       marginLeft: theme.spacing(3),
-      width: 'auto',
+      width: "auto",
     },
   },
   searchIcon: {
     padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    height: "100%",
+    position: "absolute",
+    pointerEvents: "none",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   inputRoot: {
-    color: 'inherit',
+    color: "inherit",
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("md")]: {
+      width: "20ch",
     },
   },
 }));
@@ -163,43 +170,52 @@ const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
 
   return (
-    <Toolbar
-      className={clsx(classes.root)}
-    >
-     
-        <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-          Accounts Summary
-        </Typography>
-        <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-              onChange={(e)=>{props.setQuery(e.target.value)}}
-            />
-          </div>
-      
-
+    <Toolbar className={clsx(classes.root)}>
+      <Typography
+        className={classes.title}
+        variant="h6"
+        id="tableTitle"
+        component="div"
+      >
+        Accounts Summary
+      </Typography>
+      <div className={classes.search}>
+        <div className={classes.searchIcon}>
+          <SearchIcon />
+        </div>
+        <InputBase
+          placeholder="Search…"
+          classes={{
+            root: classes.inputRoot,
+            input: classes.inputInput,
+          }}
+          inputProps={{ "aria-label": "search" }}
+          onChange={(e) => {
+            props.setQuery(e.target.value);
+          }}
+        />
+      </div>
+      <div>
+        <Fab
+          size="small"
+          color="grey"
+          aria-label="add"
+          style={{ marginRight: `${20}px` }}
+          component={Link} to="/newAccount"
+        >
+          <AddIcon />
+        </Fab>
+      </div>
     </Toolbar>
   );
 };
 
-EnhancedTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-};
-
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '100%',
+    width: "100%",
   },
   paper: {
-    width: '100%',
+    width: "100%",
     marginBottom: theme.spacing(2),
   },
   table: {
@@ -207,39 +223,57 @@ const useStyles = makeStyles((theme) => ({
   },
   visuallyHidden: {
     border: 0,
-    clip: 'rect(0 0 0 0)',
+    clip: "rect(0 0 0 0)",
     height: 1,
     margin: -1,
-    overflow: 'hidden',
+    overflow: "hidden",
     padding: 0,
-    position: 'absolute',
+    position: "absolute",
     top: 20,
     width: 1,
   },
 }));
 
-export default function EnhancedTable({data}) {
+function EnhancedTable(props) {
   const classes = useStyles();
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('calories');
-  const [selected, setSelected] = React.useState([]);
+  const [order, setOrder] = React.useState("asc");
+  const [orderBy, setOrderBy] = React.useState("acc_id");
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [query,setQuery] = React.useState('');
+  const [query, setQuery] = React.useState("");
+  const [displayMessage, setDisplayMessage] = React.useState("");
+  const rows = props.data;
 
-  const rows= query?data.filter(x=>x.accid.toString() === query):data;
-  
+  const tableData = {
+      order: order,
+      orderBy: orderBy,
+      page: page.toString(),
+      rowsPerPage: rowsPerPage.toString(),
+      query: displayMessage,
+    }
+    useEffect(() => {
+        const timeOutId = setTimeout(() => setDisplayMessage(query), 500);
+        return () => clearTimeout(timeOutId);
+      }, [query]);
+
+    useEffect(()=>{
+        props.fetchAccounts(tableData);
+         },[order,orderBy,page,rowsPerPage,displayMessage])
+
+
+  console.log(tableData);
   console.log(rows);
 
   const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+  
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -251,24 +285,21 @@ export default function EnhancedTable({data}) {
     setDense(event.target.checked);
   };
 
-  const isSelected = (name) => selected.indexOf(name) !== -1;
-
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+  const emptyRows = rowsPerPage-rows.length;
 
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={selected.length} setQuery={setQuery}/>
+        <EnhancedTableToolbar setQuery={setQuery} />
         <TableContainer>
           <Table
             className={classes.table}
             aria-labelledby="tableTitle"
-            size={dense ? 'small' : 'medium'}
+            size={dense ? "small" : "medium"}
             aria-label="enhanced table"
           >
             <EnhancedTableHead
               classes={classes}
-              numSelected={selected.length}
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
@@ -276,20 +307,11 @@ export default function EnhancedTable({data}) {
             />
             <TableBody>
               {stableSort(rows, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.accid}
-                      selected={isItemSelected}
-                    >
+                    <TableRow hover role="checkbox" tabIndex={-1} key={index}>
                       <TableCell
                         component="th"
                         id={labelId}
@@ -303,13 +325,13 @@ export default function EnhancedTable({data}) {
                       <TableCell align="right">{row.contact}</TableCell>
                       <TableCell align="right">{row.balance}</TableCell>
                       <TableCell align="right">
-                        <Modal  accid={row.accid } name='Credit Balance' />
+                        <Modal accid={row.accid} tableData={tableData} name="Credit Balance" />
                       </TableCell>
                       <TableCell align="right">
-                      <Modal  accid={row.accid } name='Debit Balance' />
+                        <Modal accid={row.accid} tableData={tableData} name="Debit Balance" />
                       </TableCell>
                       <TableCell>
-                      <Modal  accid={row.accid } name='Delete' />
+                        <Modal accid={row.accid} tableData={tableData} name="Delete" />
                       </TableCell>
                     </TableRow>
                   );
@@ -325,7 +347,7 @@ export default function EnhancedTable({data}) {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={rows.length}
+          count={15}
           rowsPerPage={rowsPerPage}
           page={page}
           onChangePage={handleChangePage}
@@ -339,3 +361,15 @@ export default function EnhancedTable({data}) {
     </div>
   );
 }
+
+
+const mapStateToProps = (state) => {
+    return {accounts:state.accounts}
+}
+
+
+
+export default connect(
+    mapStateToProps,
+    {fetchAccounts}
+)(EnhancedTable);

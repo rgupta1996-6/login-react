@@ -1,9 +1,10 @@
 import axios from 'axios';
 
 
-export const fetchAccounts = () => async dispatch => {
+export const fetchAccounts = (tableData) => async dispatch => {
 
-    const response= await axios.get('http://localhost:8000/api/showall');
+    console.log(tableData);
+    const response= await axios.post('http://localhost:8000/api/showall',tableData);
 
     dispatch({type:'FETCH_ACCOUNTS',payload: response.data})
 

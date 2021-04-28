@@ -1,6 +1,8 @@
 import React,{useState} from 'react';
 import {Redirect} from 'react-router-dom';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import {fetchAccounts} from '../actions';
 
 
 const CreditBalance = (props) => {
@@ -21,6 +23,7 @@ const CreditBalance = (props) => {
         await axios.post('http://localhost:8000/api/creditbalance',data);
         setRedirect(true);
         props.setOpen(false);
+        props.fetchAccounts(props.tableData);
         
 
     }
@@ -62,4 +65,14 @@ const CreditBalance = (props) => {
 
 };
 
-export default CreditBalance;
+
+const mapStateToProps = (state) => {
+    return {accounts:state.accounts}
+}
+
+
+
+export default connect(
+    mapStateToProps,
+    {fetchAccounts}
+)(CreditBalance);

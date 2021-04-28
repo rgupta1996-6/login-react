@@ -1,22 +1,28 @@
 import React,{useState} from 'react';
 import {Redirect} from 'react-router-dom';
 import axios from 'axios';
-import Nav from '../components/nav';
+import { connect } from 'react-redux';
+import {fetchAccounts} from '../actions';
 
 
-const DeleteAccount = () => {
-    const [accID,setAccID] = useState(''); 
+
+const DeleteAccount = (props) => {
+    const accID=props.accid;
     const [redirect,setRedirect]= useState(false);
+
+    console.log(accID);
 
     const onFormSubmit = async (e) => {
 
         e.preventDefault();
         const data = {
-            accID: accID,
+            accID: accID.toString(),
         };
 
         await axios.post('http://localhost:8000/api/deleteaccount',data);
         setRedirect(true);
+        props.setOpen(false);
+        props.fetchAccounts(props.tableData);
 
     }
 
@@ -27,18 +33,15 @@ const DeleteAccount = () => {
 
     return (
      
-      <form onSubmit={onFormSubmit} >
-        <h1 className="h3 mb-3 fw-normal">Please Enter Details</h1>
+      <form>
+        <h4 className="h4 mb-3 fw-normal">Do you want to continue to delete this account?</h4>
 
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Account ID"
-          onChange={(e) => setAccID(e.target.value)}
-        />
         <br />
-        <button className="w-100 btn btn-lg btn-primary" type="submit">
-          Submit
+        <button className="w-40 btn btn-lg btn-primary" type="submit" onClick={onFormSubmit}>
+          YES
+        </button>
+        <button className="w-40 btn btn-lg btn-primary" type="submit" style={{ marginLeft: `${20}px` }} onClick={(e)=>{e.preventDefault(); props.setOpen(false);}}>
+          NO
         </button>
       </form>
       
@@ -47,4 +50,13 @@ const DeleteAccount = () => {
 
 };
 
-export default DeleteAccount;
+const mapStateToProps = (state) => {
+    return {accounts:state.accounts}
+}
+
+
+
+export default connect(
+    mapStateToProps,
+    {fetchAccounts}
+)(DeleteAccount);

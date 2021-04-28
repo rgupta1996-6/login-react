@@ -13,7 +13,6 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 
 import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
 
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
@@ -133,6 +132,7 @@ const Dashboard=(props)=> {
     setOpen(false);
   };
 
+  console.log(props.accounts);
 
   const logout = async () => {
     await fetch('http://localhost:8000/api/logout', {
@@ -145,7 +145,7 @@ const Dashboard=(props)=> {
 
   useEffect(() => {
     props.fetchAccounts();
-   });
+   },[]);
    console.log(props.accounts);
 
   return (
@@ -203,12 +203,6 @@ const Dashboard=(props)=> {
               <AddIcon />
             </ListItemIcon>
             <ListItemText primary="Add New Account"/>
-          </ListItem>
-          <ListItem button component={Link} to="/deleteAccount">
-            <ListItemIcon>
-              <DeleteIcon />
-            </ListItemIcon>
-            <ListItemText primary="Delete Account" href="/deleteAccount" />
           </ListItem>
         </List>
       </Drawer>

@@ -52,11 +52,11 @@ export default function TransitionsModal(props) {
       >
         <Fade in={open}>
           <div className={classes.paper}>
-            <p id="transition-modal-description">
-               {props.name==='Credit Balance' && <CreditBalance accid={props.accid} setOpen={setOpen}/> }
-               {props.name==='Debit Balance' && <DebitBalance accid={props.accid} setOpen={setOpen}/>  }
-               {props.name==='Delete' && <DeleteAccount accid={props.accid} setOpen={setOpen}/>}
-               </p>
+            <div id="transition-modal-description">
+               {props.name==='Credit Balance' && <CreditBalance tableData={props.tableData} accid={props.accid} setOpen={setOpen}/> }
+               {props.name==='Debit Balance' && <DebitBalance tableData={props.tableData} accid={props.accid} setOpen={setOpen}/>  }
+               {props.name==='Delete' && <DeleteAccount tableData={props.tableData} accid={props.accid} setOpen={setOpen}/>}
+               </div>
           </div>
         </Fade>
       </Modal>

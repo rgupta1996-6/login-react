@@ -131,8 +131,13 @@ const Dashboard=(props)=> {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
-  console.log(props.accounts);
+  // const tableData = {
+  //   order: "asc",
+  //   orderBy: "acc_id",
+  //   page: "0",
+  //   rowsPerPage:"5",
+  //   query: "",
+  // };
 
   const logout = async () => {
     await fetch('http://localhost:8000/api/logout', {
@@ -143,9 +148,10 @@ const Dashboard=(props)=> {
 
 }
 
-  useEffect(() => {
-    props.fetchAccounts();
-   },[]);
+  // useEffect(() => {
+  //   console.log("hi there");
+  //   props.fetchAccounts(tableData);
+  //  },[]);
    console.log(props.accounts);
 
   return (
@@ -213,7 +219,7 @@ const Dashboard=(props)=> {
             {/* Recent Orders */}
             <Grid item xs={12}>
               <Paper className={classes.paper}>
-                <EnhancedTable data={props.accounts} />
+                <EnhancedTable />
               </Paper>
             </Grid>
           </Grid>

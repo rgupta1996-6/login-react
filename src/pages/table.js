@@ -23,6 +23,7 @@ import InputBase from "@material-ui/core/InputBase";
 import Modal from "../components/modal";
 import { connect } from 'react-redux';
 import {fetchAccounts} from '../actions';
+import {fetchCount} from '../actions';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -243,7 +244,8 @@ function EnhancedTable(props) {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [query, setQuery] = React.useState("");
   const [displayMessage, setDisplayMessage] = React.useState("");
-  const rows = props.data;
+  const [count,setCount] = React.useState(0);
+  const rows = props.accounts;
 
   const tableData = {
       order: order,
@@ -258,9 +260,13 @@ function EnhancedTable(props) {
       }, [query]);
 
     useEffect(()=>{
+      console.log("HELLO");
         props.fetchAccounts(tableData);
          },[order,orderBy,page,rowsPerPage,displayMessage])
-
+      
+         useEffect(()=>{
+           props.fetchCount(tableData);
+         },[])
 
   console.log(tableData);
   console.log(rows);
@@ -285,7 +291,8 @@ function EnhancedTable(props) {
     setDense(event.target.checked);
   };
 
-  const emptyRows = rowsPerPage-rows.length;
+
+  const emptyRows = rowsPerPage - rows.length;
 
   return (
     <div className={classes.root}>
@@ -338,7 +345,7 @@ function EnhancedTable(props) {
                 })}
               {emptyRows > 0 && (
                 <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                  <TableCell colSpan={6} />
+                  <TableCell colSpan={8} />
                 </TableRow>
               )}
             </TableBody>
@@ -347,7 +354,7 @@ function EnhancedTable(props) {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={15}
+          count={props.count}
           rowsPerPage={rowsPerPage}
           page={page}
           onChangePage={handleChangePage}
@@ -364,12 +371,15 @@ function EnhancedTable(props) {
 
 
 const mapStateToProps = (state) => {
-    return {accounts:state.accounts}
+    return { 
+      accounts:state.accounts,
+      count: state.count
+    }
 }
 
 
 
 export default connect(
     mapStateToProps,
-    {fetchAccounts}
+    {fetchAccounts,fetchCount}
 )(EnhancedTable);

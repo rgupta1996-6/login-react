@@ -3,7 +3,11 @@ import axios from 'axios';
 import {Redirect} from 'react-router-dom';
 import './home.css';
 import Nav from '../components/nav';
-const NewAccount = () => {
+import { connect } from 'react-redux';
+import {fetchCount} from '../actions';
+
+
+const NewAccount = (props) => {
 
     const [accID,setAccID] = useState(''); 
     const [accType,setAccType] = useState('');
@@ -24,7 +28,8 @@ const NewAccount = () => {
         };
 
         await axios.post('http://localhost:8000/api/addnewaccount',data);
-        setRedirect(true);
+        props.fetchCount();
+         setRedirect(true);
 
     }
 
@@ -88,4 +93,16 @@ const NewAccount = () => {
     );
 };
 
-export default NewAccount ;
+
+const mapStateToProps = (state) => {
+  return { 
+    count: state.count
+  }
+}
+
+
+
+export default connect(
+  mapStateToProps,
+  {fetchCount}
+)(NewAccount);

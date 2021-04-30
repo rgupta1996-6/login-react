@@ -3,7 +3,7 @@ import {Redirect} from 'react-router-dom';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import {fetchAccounts} from '../actions';
-
+import {fetchCount} from '../actions';
 
 
 const DeleteAccount = (props) => {
@@ -23,6 +23,7 @@ const DeleteAccount = (props) => {
         setRedirect(true);
         props.setOpen(false);
         props.fetchAccounts(props.tableData);
+        props.fetchCount(props.tableData);
 
     }
 
@@ -51,12 +52,15 @@ const DeleteAccount = (props) => {
 };
 
 const mapStateToProps = (state) => {
-    return {accounts:state.accounts}
+  return { 
+    accounts:state.accounts,
+    count: state.count
+  }
 }
 
 
 
 export default connect(
-    mapStateToProps,
-    {fetchAccounts}
+  mapStateToProps,
+  {fetchAccounts,fetchCount}
 )(DeleteAccount);

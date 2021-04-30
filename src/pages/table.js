@@ -64,7 +64,7 @@ const headCells = [
   { id: "balance", numeric: false, disablePadding: false, label: "Balance" },
   { id: "credit", numeric: false, disablePadding: false, label: "Credit" },
   { id: "debit", numeric: false, disablePadding: false, label: "Debit" },
-  { id: "debit", numeric: false, disablePadding: false },
+  { id: "delete", numeric: false, disablePadding: false },
 ];
 
 function EnhancedTableHead(props) {
@@ -199,7 +199,7 @@ const EnhancedTableToolbar = (props) => {
       <div>
         <Fab
           size="small"
-          color="grey"
+          color="default"
           aria-label="add"
           style={{ marginRight: `${20}px` }}
           component={Link} to="/newAccount"
@@ -218,6 +218,7 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     width: "100%",
     marginBottom: theme.spacing(2),
+    backgroundColor: "#F5F5F5",
   },
   table: {
     minWidth: 750,
@@ -244,7 +245,6 @@ function EnhancedTable(props) {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [query, setQuery] = React.useState("");
   const [displayMessage, setDisplayMessage] = React.useState("");
-  const [count,setCount] = React.useState(0);
   const rows = props.accounts;
 
   const tableData = {
@@ -260,7 +260,6 @@ function EnhancedTable(props) {
       }, [query]);
 
     useEffect(()=>{
-      console.log("HELLO");
         props.fetchAccounts(tableData);
          },[order,orderBy,page,rowsPerPage,displayMessage])
       
@@ -268,7 +267,6 @@ function EnhancedTable(props) {
            props.fetchCount(tableData);
          },[])
 
-  console.log(tableData);
   console.log(rows);
 
   const handleRequestSort = (event, property) => {
@@ -323,7 +321,7 @@ function EnhancedTable(props) {
                         component="th"
                         id={labelId}
                         scope="row"
-                        padding="10px"
+                        padding="default"
                       >
                         {row.accid}
                       </TableCell>

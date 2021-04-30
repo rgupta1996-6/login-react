@@ -1,4 +1,4 @@
-import React,{useEffect} from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
@@ -32,7 +32,7 @@ function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
+      <Link color="inherit" to="https://material-ui.com/">
         Your Website
       </Link>{" "}
       {new Date().getFullYear()}
@@ -131,13 +131,6 @@ const Dashboard=(props)=> {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  // const tableData = {
-  //   order: "asc",
-  //   orderBy: "acc_id",
-  //   page: "0",
-  //   rowsPerPage:"5",
-  //   query: "",
-  // };
 
   const logout = async () => {
     await fetch('http://localhost:8000/api/logout', {
@@ -148,11 +141,6 @@ const Dashboard=(props)=> {
 
 }
 
-  // useEffect(() => {
-  //   console.log("hi there");
-  //   props.fetchAccounts(tableData);
-  //  },[]);
-   console.log(props.accounts);
 
   return (
     <div className={classes.root} >
@@ -160,6 +148,7 @@ const Dashboard=(props)=> {
       <AppBar
         position="absolute"
         className={clsx(classes.appBar, open && classes.appBarShift)}
+        color="primary"
       >
         <Toolbar className={classes.toolbar}>
           <IconButton

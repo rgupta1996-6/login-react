@@ -8,11 +8,12 @@ import Box from "@material-ui/core/Box";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import List from "@material-ui/core/List";
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
 
-import AddIcon from '@material-ui/icons/Add';
+import AddIcon from "@material-ui/icons/Add";
+import Fab from "@material-ui/core/Fab";
 
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
@@ -23,10 +24,10 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import EnhancedTable from "./table";
-import { connect } from 'react-redux';
-import {fetchAccounts} from '../actions';
+import { connect } from "react-redux";
+import { fetchAccounts } from "../actions";
 
 function Copyright() {
   return (
@@ -120,9 +121,17 @@ const useStyles = makeStyles((theme) => ({
   fixedHeight: {
     height: 240,
   },
+  floatIcon: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    position: "absolute",
+    bottom: 10,
+    right: 10,
+  },
 }));
 
-const Dashboard=(props)=> {
+const Dashboard = (props) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const handleDrawerOpen = () => {
@@ -133,17 +142,15 @@ const Dashboard=(props)=> {
   };
 
   const logout = async () => {
-    await fetch('http://localhost:8000/api/logout', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        credentials: 'include',
+    await fetch("http://localhost:8000/api/logout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
     });
-
-}
-
+  };
 
   return (
-    <div className={classes.root} >
+    <div className={classes.root}>
       <CssBaseline />
       <AppBar
         position="absolute"
@@ -170,10 +177,17 @@ const Dashboard=(props)=> {
             noWrap
             className={classes.title}
           >
-               <Link to={{pathname: "/"}} className="btn btn-primary" >Home</Link>
+            <Link to={{ pathname: "/" }} className="btn btn-primary">
+              Home
+            </Link>
           </Typography>
-          <IconButton color="inherit" component={Link} to="/login" onClick={logout}>
-            <Badge  color="secondary">
+          <IconButton
+            color="inherit"
+            component={Link}
+            to="/login"
+            onClick={logout}
+          >
+            <Badge color="secondary">
               <ExitToAppIcon />
             </Badge>
           </IconButton>
@@ -197,14 +211,14 @@ const Dashboard=(props)=> {
             <ListItemIcon>
               <AddIcon />
             </ListItemIcon>
-            <ListItemText primary="Add New Account"/>
+            <ListItemText primary="Add New Account" />
           </ListItem>
         </List>
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}>         
+          <Grid container spacing={3}>
             {/* Recent Orders */}
             <Grid item xs={12}>
               <Paper className={classes.paper}>
@@ -212,6 +226,18 @@ const Dashboard=(props)=> {
               </Paper>
             </Grid>
           </Grid>
+          <div className={classes.floatIcon}>
+            <Fab
+              size="small"
+              color="default"
+              aria-label="add"
+              style={{ alignItems: "center" }}
+              component={Link}
+              to="/newAccount"
+            >
+              <AddIcon />
+            </Fab>
+          </div>
           <Box pt={4}>
             <Copyright />
           </Box>
@@ -219,15 +245,10 @@ const Dashboard=(props)=> {
       </main>
     </div>
   );
-}
+};
 
 const mapStateToProps = (state) => {
-    return {accounts:state.accounts}
-}
+  return { accounts: state.accounts };
+};
 
-
-
-export default connect(
-    mapStateToProps,
-    {fetchAccounts}
-)(Dashboard);
+export default connect(mapStateToProps, { fetchAccounts })(Dashboard);

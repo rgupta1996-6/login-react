@@ -1,0 +1,43 @@
+.Notification {
+    position: absolute;
+    top: 20px;
+    left: 100%;
+    width: 340px;
+    padding: 22px 30px;
+    border-radius: 12px;
+    background-color:gold;
+}
+
+@keyframes showup {
+
+    from{
+        left: 100%;
+    }
+    to { 
+
+        left: calc(100% - 360px);
+    }
+}
+
+@keyframes hideup {
+
+    from {
+        left: calc(100% - 360px);
+    }
+    to {
+        left: 100%;
+    }
+    
+}
+
+.Show{
+    animation: showup 0.3s ease-out;
+    animation-fill-mode: forwards;
+
+}
+
+.Hide{
+    animation: hideup 0.3s ease-out;
+    animation-fill-mode: forwards;
+
+}

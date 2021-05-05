@@ -1,5 +1,4 @@
 import React,{useState} from 'react';
-import {Redirect} from 'react-router-dom';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import {fetchAccounts} from '../actions';
@@ -8,9 +7,8 @@ import {fetchAccounts} from '../actions';
 const CreditBalance = (props) => {
     const accid = props.accid; 
     const [amount,setAmount]= useState('');
-    const [redirect,setRedirect]= useState(false);
-
-
+    const [message,setMessage] = useState('');
+    const [alertMessage,setAlertMessage] = useState('');
     const onFormSubmit = async (e) => {
 
         e.preventDefault();
@@ -20,24 +18,28 @@ const CreditBalance = (props) => {
         };
 
         console.log(data);
-        await axios.post('http://localhost:8000/api/creditbalance',data);
-        setRedirect(true);
+        const r= await axios.post('http://localhost:8000/api/creditbalance',data);
+        setMessage(r.data.message);
+        setAlertMessage("Account has been credited successfully");
         props.setOpen(false);
-        props.fetchAccounts(props.tableData);
-        
-
+        props.fetchAccounts(props.tableData); 
     }
 
-    if (redirect){
-        console.log("redirected");
-        return <Redirect to="/"/>;
-        
-    }
+    const onCancelClick = (e) => {
+      e.preventDefault();
+      props.setOpen(false);
+      setMessage("SUCCESS");
+      setAlertMessage("Transaction has been cancelled!")
+    };
 
+   props.callbackMessage(message,alertMessage);
+    
+
+   
 
     return (
      
-      <form onSubmit={onFormSubmit} >
+      <form >
         <h1 className="h3 mb-3 fw-normal text-muted">Enter Amount</h1>
 
         <input
@@ -56,10 +58,16 @@ const CreditBalance = (props) => {
         />
 
         <br />
-        <button className="w-100 btn btn-lg btn-primary btn-info" type="submit">
+        <button className="btn btn-primary btn-sm btn-secondary" type="submit" onClick={onFormSubmit}>
           Submit
         </button>
+        <button style={{ marginLeft: `${10}px` }} className="btn btn-primary btn-sm btn-secondary" type="submit" onClick={onCancelClick}>
+          Cancel
+        </button>
       </form>
+     
+      
+      
     );
 
 

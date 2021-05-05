@@ -33,6 +33,10 @@ export default function TransitionsModal(props) {
   const handleClose = () => {
     setOpen(false);
   };
+  const callbackMessage = (x,alertMessage) => {
+    console.log(x,alertMessage);
+    props.callbackMessage(x,alertMessage);
+  };
 
   return (
     <div>
@@ -53,8 +57,8 @@ export default function TransitionsModal(props) {
         <Fade in={open}>
           <div className={classes.paper}>
             <div id="transition-modal-description">
-               {props.name==='Credit Balance' && <CreditBalance tableData={props.tableData} accid={props.accid} setOpen={setOpen}/> }
-               {props.name==='Debit Balance' && <DebitBalance tableData={props.tableData} accid={props.accid} setOpen={setOpen}/>  }
+               {props.name==='Credit Balance' && <CreditBalance tableData={props.tableData} accid={props.accid} setOpen={setOpen} callbackMessage={callbackMessage}/> }
+               {props.name==='Debit Balance' && <DebitBalance tableData={props.tableData} accid={props.accid} setOpen={setOpen} callbackMessage={callbackMessage}/>  }
                {props.name==='Delete' && <DeleteAccount tableData={props.tableData} accid={props.accid} setOpen={setOpen}/>}
                </div>
           </div>

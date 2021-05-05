@@ -1,16 +1,14 @@
 import React,{useState} from 'react';
-import {Redirect} from 'react-router-dom';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import {fetchAccounts} from '../actions';
 
 
-
 const DebitBalance = (props) => {
     const accid = props.accid; 
     const [amount,setAmount]= useState('');
-    const [redirect,setRedirect]= useState(false);
-
+    const [message,setMessage] = useState('');
+    const [alertMessage,setAlertMessage] = useState('');
     const onFormSubmit = async (e) => {
 
         e.preventDefault();
@@ -19,22 +17,30 @@ const DebitBalance = (props) => {
             amount: amount,
         };
 
-        await axios.post('http://localhost:8000/api/debitbalance',data);
-        setRedirect(true);
+        console.log(data);
+        const r= await axios.post('http://localhost:8000/api/debitbalance',data);
+        setMessage(r.data.message);
+        setAlertMessage("Account has been debited successfully");
         props.setOpen(false);
-        props.fetchAccounts(props.tableData);
-
+        props.fetchAccounts(props.tableData); 
     }
 
-    if (redirect){
-        return <Redirect to="/"/>;
-    }
+    const onCancelClick = (e) => {
+      e.preventDefault();
+      props.setOpen(false);
+      setMessage("SUCCESS");
+      setAlertMessage("Transaction has been cancelled!")
+    };
 
+   props.callbackMessage(message,alertMessage);
+    
+
+   
 
     return (
-        
-      <form onSubmit={onFormSubmit}>
-        <h3 className="h3 mb-3 fw-normal text-muted">Enter Amount</h3>
+     
+      <form >
+        <h1 className="h3 mb-3 fw-normal text-muted">Enter Amount</h1>
 
         <input
           type="text"
@@ -52,15 +58,20 @@ const DebitBalance = (props) => {
         />
 
         <br />
-        <button className="w-100 btn btn-lg btn-primary btn-small" type="submit">
+        <button className="btn btn-primary btn-sm btn-secondary" type="submit" onClick={onFormSubmit}>
           Submit
         </button>
+        <button style={{ marginLeft: `${10}px` }} className="btn btn-primary btn-sm btn-secondary" type="submit" onClick={onCancelClick}>
+          Cancel
+        </button>
       </form>
+     
+      
+      
     );
 
 
 };
-
 
 
 const mapStateToProps = (state) => {

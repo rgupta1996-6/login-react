@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import { Link } from "react-router-dom";
 import { lighten, makeStyles, fade } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -14,8 +13,6 @@ import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
-import Fab from "@material-ui/core/Fab";
-import AddIcon from "@material-ui/icons/Add";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import SearchIcon from "@material-ui/icons/Search";
@@ -24,6 +21,7 @@ import Modal from "../components/modal";
 import { connect } from 'react-redux';
 import {fetchAccounts} from '../actions';
 import {fetchCount} from '../actions';
+import Snackbar from '../components/snackBar';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -196,17 +194,6 @@ const EnhancedTableToolbar = (props) => {
           }}
         />
       </div>
-      <div>
-        <Fab
-          size="small"
-          color="default"
-          aria-label="add"
-          style={{ marginRight: `${20}px` }}
-          component={Link} to="/newAccount"
-        >
-          <AddIcon />
-        </Fab>
-      </div>
     </Toolbar>
   );
 };
@@ -245,6 +232,8 @@ function EnhancedTable(props) {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [query, setQuery] = React.useState("");
   const [displayMessage, setDisplayMessage] = React.useState("");
+  const [x,setX] = React.useState("");
+  const [alert,setAlert] = React.useState('');
   const rows = props.accounts;
 
   const tableData = {
@@ -289,6 +278,11 @@ function EnhancedTable(props) {
     setDense(event.target.checked);
   };
 
+  const callbackMessage = (x,alertMessage) => {
+
+    setX(x);
+    setAlert(alertMessage);
+  };
 
   const emptyRows = rowsPerPage - rows.length;
 
@@ -330,10 +324,10 @@ function EnhancedTable(props) {
                       <TableCell align="right">{row.contact}</TableCell>
                       <TableCell align="right">{row.balance}</TableCell>
                       <TableCell align="right">
-                        <Modal accid={row.accid} tableData={tableData} name="Credit Balance" />
+                        <Modal accid={row.accid} tableData={tableData} name="Credit Balance" callbackMessage={callbackMessage} />
                       </TableCell>
                       <TableCell align="right">
-                        <Modal accid={row.accid} tableData={tableData} name="Debit Balance" />
+                        <Modal accid={row.accid} tableData={tableData} name="Debit Balance" callbackMessage={callbackMessage} />
                       </TableCell>
                       <TableCell>
                         <Modal accid={row.accid} tableData={tableData} name="Delete" />
@@ -363,6 +357,7 @@ function EnhancedTable(props) {
         control={<Switch checked={dense} onChange={handleChangeDense} />}
         label="Dense padding"
       />
+      {x === "SUCCESS" && <Snackbar alertMessage={alert}/>}
     </div>
   );
 }

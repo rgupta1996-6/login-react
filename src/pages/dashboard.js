@@ -12,8 +12,9 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 
-import AddIcon from "@material-ui/icons/Add";
+import HomeIcon from '@material-ui/icons/Home';
 import Fab from "@material-ui/core/Fab";
+import AddIcon from '@material-ui/icons/Add';
 
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
@@ -126,14 +127,14 @@ const useStyles = makeStyles((theme) => ({
     height: 60,
     borderRadius: 30,
     position: "absolute",
-    bottom: 10,
-    right: 10,
+    bottom: 0,
+    right: 0,
   },
 }));
 
 const Dashboard = (props) => {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -177,9 +178,7 @@ const Dashboard = (props) => {
             noWrap
             className={classes.title}
           >
-            <Link to={{ pathname: "/" }} className="btn btn-primary">
-              Home
-            </Link>
+            DEMO APP
           </Typography>
           <IconButton
             color="inherit"
@@ -207,11 +206,11 @@ const Dashboard = (props) => {
         </div>
         <Divider />
         <List>
-          <ListItem button component={Link} to="/newAccount">
+          <ListItem button component={Link} to="/">
             <ListItemIcon>
-              <AddIcon />
+              <HomeIcon />
             </ListItemIcon>
-            <ListItemText primary="Add New Account" />
+            <ListItemText primary="Home" />
           </ListItem>
         </List>
       </Drawer>

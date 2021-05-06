@@ -5,9 +5,27 @@ import './home.css';
 import Nav from '../components/nav';
 import { connect } from 'react-redux';
 import {fetchCount} from '../actions';
+import { makeStyles } from "@material-ui/core/styles";
+
+
+
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+  },
+  appBarSpacer: theme.mixins.toolbar,
+  content: {
+    flexGrow: 1,
+    height: "100vh",
+    overflow: "auto",
+  },
+
+}));
 
 
 const NewAccount = (props) => {
+  const classes = useStyles();
 
     const [accID,setAccID] = useState(''); 
     const [accType,setAccType] = useState('');
@@ -40,9 +58,11 @@ const NewAccount = (props) => {
 
     return (
 
-        <>
+        <div className={classes.root}>
         <Nav/> 
-      <form onSubmit={onFormSubmit} style={{ marginTop: `${60}px` }}>
+        <main className={classes.content}>
+        <div className={classes.appBarSpacer} />
+      <form className= {"form-signin"} onSubmit={onFormSubmit}>
         <h1 className="h3 mb-3 fw-normal">Please Enter Details</h1>
 
         <input
@@ -89,7 +109,8 @@ const NewAccount = (props) => {
           Submit
         </button>
       </form>
-      </>
+      </main>
+      </div>
     );
 };
 

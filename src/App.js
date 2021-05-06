@@ -29,10 +29,8 @@ const App = () => {
         <Route path="/" exact component={name? Dashboard  :()=><div>You Have been logged out,Please Login to continue</div>} />
         <Route path="/login" exact component= {()=><Login setName={setName}/>}/>
         <Route path="/register" exact component={Register} />
-    
-        <main className="form-signin">
-          <Route path="/newAccount" exact component={name?() => <NewAccount />:()=><div>You Have been logged out,Please Login to continue</div>} />
-        </main>
+        <Route path="/newAccount" exact component={name?() => <NewAccount />:()=><div>You Have been logged out,Please Login to continue</div>} />
+
       </BrowserRouter>
 
     </div>
